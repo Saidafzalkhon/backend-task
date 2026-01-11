@@ -1,8 +1,7 @@
 package uz.java.backendtask.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -15,6 +14,9 @@ import lombok.Setter;
                         columnNames = {"user_id", "role_id"}
                 )
         })
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRole extends BaseEntity {
 
     @Id
@@ -22,11 +24,11 @@ public class UserRole extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "role_id", nullable = false, updatable = false)
     private Role role;
 }

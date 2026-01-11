@@ -32,9 +32,9 @@ public class SecurityConfiguration {
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-ui.html",
-            "/swagger-ui/**",
             "/api-docs/**",
-            "/"};
+            "/"
+    };
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -48,7 +48,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
-                                .requestMatchers(HttpMethod.POST, "/admin/auth/login")
+                                .requestMatchers(HttpMethod.POST, "/api/v1/admin/auth/login")
                                 .permitAll()
                                 .anyRequest().authenticated()
                 )

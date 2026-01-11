@@ -11,7 +11,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @Id
     @Column(name = "id", nullable = false, updatable = false, unique = true)
@@ -35,7 +35,7 @@ public class User extends BaseEntity{
 
     @OneToMany(
             mappedBy = "user",
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )

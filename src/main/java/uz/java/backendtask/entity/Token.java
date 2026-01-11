@@ -9,7 +9,7 @@ import uz.java.backendtask.enumeration.TokenType;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity @Table(name = "tokens")
 public class Token extends BaseEntity {
 
     @Id
@@ -25,7 +25,7 @@ public class Token extends BaseEntity {
     public TokenType tokenType = TokenType.ACCESS;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",nullable = false)
     public User user;
 
 }

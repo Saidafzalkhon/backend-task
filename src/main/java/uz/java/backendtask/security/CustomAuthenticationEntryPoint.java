@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
+import uz.java.backendtask.dto.ResponseExceptionDTO;
 
 import java.io.OutputStream;
 
@@ -21,12 +22,18 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     @Override
     @SneakyThrows
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException){
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         OutputStream out = response.getOutputStream();
-        mapper.writeValue(out, ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized"));
+        mapper.writeValue(out,
+                ResponseExceptionDTO
+                        .builder()
+                        .ok(false)
+                        .status(401)
+                        .message("Unauthorized")
+                        .build());
         out.flush();
         out.close();
     }
