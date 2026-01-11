@@ -12,3 +12,10 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5960
+      access:
+        ttl: 900000
+      refresh:
+        ttl: 604800000
