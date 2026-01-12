@@ -19,3 +19,16 @@ spring:
         ttl: 900000
       refresh:
         ttl: 604800000
+
+  cache:
+    type: redis
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+
+minio:
+  url: http://127.0.0.1:9000
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket: media

@@ -3,8 +3,8 @@ create table tokens (
                         token        varchar(255) not null,
                         token_type   varchar(50) not null,
                         user_id      bigint not null,
-                        created_at   timestamptz not null default now(),
-                        updated_at   timestamptz,
+                        created_at   TIMESTAMP not null default now(),
+                        updated_at   TIMESTAMP,
 
                         constraint fk_tokens_user
                             foreign key (user_id)

@@ -71,6 +71,30 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
+    @ExceptionHandler(TagException.class)
+    public ResponseEntity<ResponseExceptionDTO> handleBusinessException(
+            TagException ex
+    ) {
+        return ResponseEntity.status(404).body(
+                ResponseExceptionDTO.builder()
+                        .ok(false)
+                        .status(404)
+                        .message(ex.getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler(FileException.class)
+    public ResponseEntity<ResponseExceptionDTO> handleBusinessException(
+            FileException ex
+    ) {
+        return ResponseEntity.status(404).body(
+                ResponseExceptionDTO.builder()
+                        .ok(false)
+                        .status(404)
+                        .message(ex.getMessage())
+                        .build());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseExceptionDTO> handleBusinessException(
             Exception ex

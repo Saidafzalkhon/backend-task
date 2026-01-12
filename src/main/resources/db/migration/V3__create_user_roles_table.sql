@@ -3,8 +3,8 @@ create table user_roles
     id         bigserial primary key,
     user_id    bigint      not null,
     role_id    bigint      not null,
-    created_at timestamptz not null default now(),
-    updated_at timestamptz,
+    created_at TIMESTAMP not null default now(),
+    updated_at TIMESTAMP,
 
     constraint fk_user_roles_user
         foreign key (user_id)

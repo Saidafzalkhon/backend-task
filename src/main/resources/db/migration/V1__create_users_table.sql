@@ -6,6 +6,6 @@ create table users
     full_name     varchar(255) not null,
     password_hash varchar(255) not null,
     is_active     boolean      not null default true,
-    created_at    timestamp    not null default now(),
-    updated_at    timestamp
+    created_at    TIMESTAMP    not null default now(),
+    updated_at    TIMESTAMP
 );
