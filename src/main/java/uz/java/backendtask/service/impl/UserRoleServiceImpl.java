@@ -1,6 +1,7 @@
 package uz.java.backendtask.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -55,6 +56,10 @@ public class UserRoleServiceImpl implements UserRoleService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(
+            value = "list60s",
+            key = "#criteria.toString() + ':' + #request.pageNumber + ':' + #request.pageSize"
+    )
     public Page<UserRoleResponseDTO> search(PageRequest request, UserRoleCriteria criteria) {
         Specification<UserRole> spec = new SpecBuilder<UserRole>()
                 .eq("id", criteria.getId())

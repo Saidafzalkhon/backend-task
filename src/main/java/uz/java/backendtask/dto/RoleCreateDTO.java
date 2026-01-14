@@ -6,10 +6,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @ToString
-public class RoleCreateDTO {
+public class RoleCreateDTO  implements Serializable {
 
     @NotBlank(message = "name")
     @Size(min = 1,max = 255, message = "name min 1 max 255 characters")

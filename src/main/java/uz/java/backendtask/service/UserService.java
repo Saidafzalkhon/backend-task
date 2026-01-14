@@ -18,4 +18,6 @@ public interface UserService {
     Page<UserResponseDTO> search(PageRequest request, UserCriteria criteria);
 
     User findById(Long id);
+
+    User current();
 }

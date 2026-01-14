@@ -1,15 +1,19 @@
 package uz.java.backendtask.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.java.backendtask.dto.UserCriteria;
 import uz.java.backendtask.dto.UserResponseDTO;
 import uz.java.backendtask.entity.User;
+import uz.java.backendtask.exception.UnauthorizedException;
 import uz.java.backendtask.exception.UserException;
 import uz.java.backendtask.mapper.UserMapper;
 import uz.java.backendtask.repository.UserRepository;
@@ -45,6 +49,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(
+            value = "list60s",
+            key = "#criteria.toString() + ':' + #request.pageNumber + ':' + #request.pageSize"
+    )
     public Page<UserResponseDTO> search(PageRequest request, UserCriteria criteria) {
         Specification<User> spec = new SpecBuilder<User>()
                 .eq("id", criteria.getId())
@@ -65,5 +73,18 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User findById(Long id) {
         return repository.findById(id).orElseThrow(() -> new UserException("user not found: " + id));
+    }
+
+    public User current() {
+        Authentication auth = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        if (auth == null || !auth.isAuthenticated()
+                || auth.getPrincipal().equals("anonymousUser")) {
+            throw new UnauthorizedException("Unauthorized");
+        }
+        SecurityUser securityUser = (SecurityUser) auth.getPrincipal();
+        return securityUser.getUser();
     }
 }

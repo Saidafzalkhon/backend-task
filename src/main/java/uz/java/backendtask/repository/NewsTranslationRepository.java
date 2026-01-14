@@ -10,5 +10,13 @@ import java.util.Optional;
 public interface NewsTranslationRepository
         extends JpaRepository<NewsTranslation, Long> {
 
-    Optional<NewsTranslation> findBySlugAndLang(String slug, String lang);
+    boolean existsByLangAndSlug(String lang, String slug);
+
+    boolean existsByLangAndSlugAndNewsIdNot(
+            String lang,
+            String slug,
+            Long newsId
+    );
+
 }
+

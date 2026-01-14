@@ -1,6 +1,7 @@
 package uz.java.backendtask.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,6 +16,9 @@ import uz.java.backendtask.repository.TagRepository;
 import uz.java.backendtask.service.TagService;
 import uz.java.backendtask.specification.PageRequest;
 import uz.java.backendtask.specification.SpecBuilder;
+
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -52,8 +56,25 @@ public class TagServiceImpl implements TagService {
         return mapper.toResponse(findById(id));
     }
 
+
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(
+            value = "list120s",
+            key = "#request.pageNumber + ':' + #request.pageSize"
+    )
+    public Page<TagResponseDTO> searchPublic(PageRequest request) {
+        Pageable page = org.springframework.data.domain.PageRequest.of(request.getPageNumber(), request.getPageSize(),
+                Sort.by(request.getSortDirection(), request.getSortBy()));
+        return mapper.toResponse(repository.findAll(page));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(
+            value = "list60s",
+            key = "#criteria.toString() + ':' + #request.pageNumber + ':' + #request.pageSize"
+    )
     public Page<TagResponseDTO> search(PageRequest request, TagSearchCriteria criteria) {
         Specification<Tag> spec = new SpecBuilder<Tag>()
                 .eq("id", criteria.getId())
@@ -75,6 +96,11 @@ public class TagServiceImpl implements TagService {
     private void checkCodeAndIdNot(String name, Long id) {
         boolean check = repository.existsByCodeAndIdNot(name, id);
         if (check) throw new TagException("tag already exists");
+    }
+
+    @Override
+    public Set<Tag> findAllByIds(Set<Long> tags) {
+        return repository.findAllByIdIn(tags);
     }
 
     @Override

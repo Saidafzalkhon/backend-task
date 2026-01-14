@@ -4,9 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import uz.java.backendtask.entity.Media;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
-public class MediaResponse {
+public class MediaResponse  implements Serializable {
 
     private Long id;
     private String url;

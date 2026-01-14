@@ -6,12 +6,13 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @ToString
-public class RoleSearchCriteria {
+public class RoleSearchCriteria  implements Serializable {
 
     private Long id;
 

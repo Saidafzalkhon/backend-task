@@ -1,7 +1,9 @@
 package uz.java.backendtask.exception;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import uz.java.backendtask.dto.ResponseExceptionDTO;
@@ -10,7 +12,10 @@ import uz.java.backendtask.dto.ResponseExceptionDTO;
 public class GlobalExceptionHandler {
 
 
-    @ExceptionHandler(AuthenticationException.class)
+    @ExceptionHandler({
+            AuthenticationException.class,
+            UnauthorizedException.class
+    })
     public ResponseEntity<ResponseExceptionDTO> handleBusinessException(
             AuthenticationException ex
     ) {
@@ -22,40 +27,60 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
-    @ExceptionHandler(UserException.class)
-    public ResponseEntity<ResponseExceptionDTO> handleBusinessException(
-            UserException ex
+    @ExceptionHandler({
+            AdsCampaignException.class,
+            AdsCreativeException.class,
+            AdsPlacementException.class,
+            AssigmentException.class,
+            CategoryException.class,
+            ConflictException.class,
+            FileException.class,
+            MediaException.class,
+            NewsException.class,
+            RoleException.class,
+            TagException.class,
+            UserException.class,
+            UserRoleException.class,
+            ValidationException.class,
+            HttpMessageNotReadableException.class
+    })
+    public ResponseEntity<ResponseExceptionDTO> handleAppException(
+            Exception ex
     ) {
-        return ResponseEntity.status(404).body(
+        return ResponseEntity.status(400).body(
                 ResponseExceptionDTO.builder()
                         .ok(false)
-                        .status(404)
+                        .status(400)
                         .message(ex.getMessage())
                         .build());
     }
 
-    @ExceptionHandler(RoleException.class)
-    public ResponseEntity<ResponseExceptionDTO> handleBusinessException(
-            RoleException ex
-    ) {
-        return ResponseEntity.status(404).body(
-                ResponseExceptionDTO.builder()
-                        .ok(false)
-                        .status(404)
-                        .message(ex.getMessage())
-                        .build());
-    }
 
-    @ExceptionHandler(UserRoleException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseExceptionDTO> handleBusinessException(
-            UserRoleException ex
+            MethodArgumentNotValidException ex
     ) {
-        return ResponseEntity.status(404).body(
+        String message;
+
+        if (!ex.getBindingResult().getFieldErrors().isEmpty()) {
+            message = ex.getBindingResult()
+                    .getFieldErrors()
+                    .get(0)
+                    .getDefaultMessage();
+        } else {
+            message = ex.getBindingResult()
+                    .getGlobalErrors()
+                    .get(0)
+                    .getDefaultMessage();
+        }
+
+        return ResponseEntity.status(400).body(
                 ResponseExceptionDTO.builder()
                         .ok(false)
-                        .status(404)
-                        .message(ex.getMessage())
-                        .build());
+                        .status(400)
+                        .message(message)
+                        .build()
+        );
     }
 
 
@@ -71,34 +96,12 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
-    @ExceptionHandler(TagException.class)
-    public ResponseEntity<ResponseExceptionDTO> handleBusinessException(
-            TagException ex
-    ) {
-        return ResponseEntity.status(404).body(
-                ResponseExceptionDTO.builder()
-                        .ok(false)
-                        .status(404)
-                        .message(ex.getMessage())
-                        .build());
-    }
-
-    @ExceptionHandler(FileException.class)
-    public ResponseEntity<ResponseExceptionDTO> handleBusinessException(
-            FileException ex
-    ) {
-        return ResponseEntity.status(404).body(
-                ResponseExceptionDTO.builder()
-                        .ok(false)
-                        .status(404)
-                        .message(ex.getMessage())
-                        .build());
-    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseExceptionDTO> handleBusinessException(
             Exception ex
     ) {
+        ex.printStackTrace();
         return ResponseEntity.status(500).body(
                 ResponseExceptionDTO.builder()
                         .ok(false)

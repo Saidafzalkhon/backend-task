@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import uz.java.backendtask.enumeration.AdsCreativeType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "ads_creative")
 @Getter
@@ -20,7 +23,7 @@ public class AdsCreative extends BaseEntity {
     private AdsCampaign campaign;
 
     @Enumerated(EnumType.STRING)
-    private AdsCreativeType type; // IMAGE, HTML
+    private AdsCreativeType type;
 
     @Column(name = "landing_url")
     private String landingUrl;
@@ -29,11 +32,14 @@ public class AdsCreative extends BaseEntity {
     @JoinColumn(name = "image_media_id")
     private Media imageMedia;
 
-    @Column(name = "html_snippet",columnDefinition = "text")
+    @Column(name = "html_snippet", columnDefinition = "text")
     @Lob
     private String htmlSnippet;
 
     @Column(name = "is_active")
     private Boolean isActive;
+
+    @OneToMany(mappedBy = "creative", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AdsCreativeTranslation> translations = new ArrayList<>();
 
 }

@@ -5,6 +5,9 @@ import uz.java.backendtask.dto.*;
 import uz.java.backendtask.entity.Tag;
 import uz.java.backendtask.specification.PageRequest;
 
+import java.util.List;
+import java.util.Set;
+
 public interface TagService {
 
     TagResponseDTO create(TagCreateDTO createDTO);
@@ -15,9 +18,12 @@ public interface TagService {
 
     TagResponseDTO getById(Long id);
 
+    Page<TagResponseDTO> searchPublic(PageRequest request);
     Page<TagResponseDTO> search(PageRequest request, TagSearchCriteria criteria);
 
     Tag findById(Long id);
 
     void deleteById(Long id);
+
+    Set<Tag> findAllByIds(Set<Long> tags);
 }

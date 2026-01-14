@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class UserResponseDTO {
+public class UserResponseDTO  implements Serializable {
 
     private Long id;
 

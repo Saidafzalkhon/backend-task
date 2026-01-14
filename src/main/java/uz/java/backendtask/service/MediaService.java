@@ -2,6 +2,7 @@ package uz.java.backendtask.service;
 
 import org.springframework.web.multipart.MultipartFile;
 import uz.java.backendtask.dto.MediaResponse;
+import uz.java.backendtask.entity.Media;
 import uz.java.backendtask.security.SecurityUser;
 
 public interface MediaService {
@@ -13,4 +14,6 @@ public interface MediaService {
     );
 
     void delete(Long mediaId, SecurityUser currentUserSecurity);
+
+    Media findById(Long id);
 }

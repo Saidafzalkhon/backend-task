@@ -1,8 +1,12 @@
 package uz.java.backendtask.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 import uz.java.backendtask.enumeration.NewsStatus;
 
 import java.time.LocalDateTime;
@@ -34,8 +38,11 @@ public class NewsHistory extends BaseEntity {
     private NewsStatus toStatus;
 
     @Column(name = "diff_json", columnDefinition = "jsonb")
-    private String diffJson;
+    @Type(JsonType.class)
+    private Object diffJson;
 
     @Column(name = "changed_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime changedAt;
 }

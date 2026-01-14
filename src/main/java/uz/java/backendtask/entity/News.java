@@ -1,8 +1,10 @@
 package uz.java.backendtask.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import uz.java.backendtask.enumeration.NewsStatus;
 
 import java.time.LocalDateTime;
@@ -34,7 +36,7 @@ public class News extends BaseEntity {
     private Media coverMedia;
 
     @Enumerated(EnumType.STRING)
-    private NewsStatus status; //DRAFT, REVIEW, PUBLISHED, UNPUBLISHED, ARCHIVED
+    private NewsStatus status;
 
     @Column(name = "is_featured")
     private Boolean isFeatured;
@@ -43,12 +45,18 @@ public class News extends BaseEntity {
     private Boolean isDeleted;
 
     @Column(name = "publish_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime publishAt;
 
     @Column(name = "unpublish_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime unpublishAt;
 
     @Column(name = "deleted_at")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime deletedAt;
 
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)

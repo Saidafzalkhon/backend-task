@@ -1,6 +1,7 @@
 package uz.java.backendtask.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -54,6 +55,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(
+            value = "list60s",
+            key = "#criteria.toString() + ':' + #request.pageNumber + ':' + #request.pageSize"
+    )
     public Page<RoleResponseDTO> search(PageRequest request, RoleSearchCriteria criteria) {
         Specification<Role> spec = new SpecBuilder<Role>()
                 .eq("id", criteria.getId())

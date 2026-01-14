@@ -6,10 +6,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @ToString
-public class TagCreateDTO {
+public class TagCreateDTO  implements Serializable {
 
     @NotBlank(message = "code")
     @Size(min = 1,max = 255, message = "code min 1 max 255 characters")

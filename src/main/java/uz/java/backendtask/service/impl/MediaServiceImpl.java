@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import uz.java.backendtask.dto.MediaResponse;
 import uz.java.backendtask.entity.Media;
 import uz.java.backendtask.entity.User;
+import uz.java.backendtask.exception.MediaException;
 import uz.java.backendtask.repository.MediaRepository;
 import uz.java.backendtask.security.SecurityUser;
 import uz.java.backendtask.service.MediaService;
@@ -26,6 +27,11 @@ public class MediaServiceImpl implements MediaService {
     private final StorageService storageService;
     private final MediaRepository mediaRepository;
 
+
+    @Override
+    public Media findById(Long id) {
+        return mediaRepository.findById(id).orElseThrow(()-> new MediaException("media not found"));
+    }
 
     public void delete(Long mediaId, SecurityUser currentUserSecurity) {
         User currentUser = currentUserSecurity.getUser();
@@ -77,7 +83,6 @@ public class MediaServiceImpl implements MediaService {
         media.setIsPublic(isPublic);
         media.setOwner(owner.getUser());
 
-        // image bo‘lsa width/height o‘qiymiz
         setImageDimensionsIfNeeded(media, file);
 
         mediaRepository.save(media);

@@ -1,6 +1,7 @@
 package uz.java.backendtask.specification;
 
 import jakarta.persistence.criteria.From;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -61,6 +62,31 @@ public final class SpecBuilder<T> {
                 ))
         );
     }
+
+    public <J> SpecBuilder<T> joinFts(
+            String joinField,
+            String ftsColumn,
+            String searchQuery
+    ) {
+        return (searchQuery == null || searchQuery.isBlank()) ? this
+                : add((root, query, cb) -> {
+
+            query.distinct(true);
+
+            Join<T, J> join = root.join(joinField, JoinType.INNER);
+
+            return cb.isTrue(
+                    cb.function(
+                            "fts_match",
+                            Boolean.class,
+                            join.get(ftsColumn),
+                            cb.literal(searchQuery)
+                    )
+            );
+        });
+    }
+
+
 
     public <J, V> SpecBuilder<T> joinLike(String joinField, String nestedField, String value) {
         return value == null ? this : add((root, query, cb) ->
