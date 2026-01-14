@@ -2,39 +2,45 @@ server:
   port: ${APP_PORT:8080}
 
 spring:
-  profiles:
-    active: ${SPRING_PROFILES_ACTIVE:prod}
-
   datasource:
     url: ${SPRING_DATASOURCE_URL}
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME}
 
   jpa:
+    database: ${SPRING_JPA_DATABASE}
     hibernate:
-      ddl-auto: validate
-    show-sql: true
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
+    show-sql: ${SPRING_JPA_SHOW_SQL}
 
   flyway:
-    enabled: true
-    baseline-on-migrate: true
+    enabled: ${SPRING_FLYWAY_ENABLED}
+    baseline-on-migrate: ${SPRING_FLYWAY_BASELINE_ON_MIGRATE}
 
   cache:
-    type: redis
+    type: ${SPRING_CACHE_TYPE}
 
-redis:
-  host: ${SPRING_REDIS_HOST}
-  port: ${SPRING_REDIS_PORT}
+  redis:
+    host: ${SPRING_REDIS_HOST}
+    port: ${SPRING_REDIS_PORT}
+
+  security:
+    jwt:
+      secret-key: ${SPRING_SECURITY_JWT_SECRET_KEY}
+      access:
+        ttl: ${SPRING_SECURITY_JWT_ACCESS_TTL}
+      refresh:
+        ttl: ${SPRING_SECURITY_JWT_REFRESH_TTL}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ${MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE}
 
 minio:
   url: ${MINIO_ENDPOINT}
   access-key: ${MINIO_ACCESS_KEY}
   secret-key: ${MINIO_SECRET_KEY}
   bucket: ${MINIO_BUCKET}
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,prometheus
