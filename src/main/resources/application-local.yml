@@ -1,0 +1,46 @@
+server:
+  port: ${APP_PORT:8080}
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 1626
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+  cache:
+    type: redis
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5960
+      access:
+        ttl: 900000
+      refresh:
+        ttl: 604800000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+minio:
+  url: http://minio:9000
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket: uploads

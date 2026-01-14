@@ -57,8 +57,8 @@ public class RoleServiceImpl implements RoleService {
     @Transactional(readOnly = true)
     @Cacheable(
             value = "list60s",
-            key = "#criteria.toString() + ':' + #request.pageNumber + ':' + #request.pageSize"
-    )
+            key = "T(java.util.Objects).toString(#criteria, 'nocriteria') + ':' + T(java.util.Objects).toString(#request?.pageNumber, 0)"
+                    + " + ':' + T(java.util.Objects).toString(#request?.pageSize, 10)"       )
     public Page<RoleResponseDTO> search(PageRequest request, RoleSearchCriteria criteria) {
         Specification<Role> spec = new SpecBuilder<Role>()
                 .eq("id", criteria.getId())

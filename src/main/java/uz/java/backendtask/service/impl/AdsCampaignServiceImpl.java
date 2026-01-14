@@ -55,8 +55,8 @@ public class AdsCampaignServiceImpl implements AdsCampaignService {
     @Transactional(readOnly = true)
     @Cacheable(
             value = "list60s",
-            key = "#criteria.toString() + ':' + #request.pageNumber + ':' + #request.pageSize"
-    )
+            key = "T(java.util.Objects).toString(#criteria, 'nocriteria') + ':' + T(java.util.Objects).toString(#request?.pageNumber, 0)"
+                    + " + ':' + T(java.util.Objects).toString(#request?.pageSize, 10)"    )
     public Page<AdsCampaignResponseDTO> search(PageRequest request, AdsCampaignSearchCriteria criteria) {
         Specification<AdsCampaign> spec = new SpecBuilder<AdsCampaign>()
                 .eq("id", criteria.getId())

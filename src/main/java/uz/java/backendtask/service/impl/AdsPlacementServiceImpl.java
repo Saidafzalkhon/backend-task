@@ -57,8 +57,8 @@ public class AdsPlacementServiceImpl implements AdsPlacementService {
     @Transactional(readOnly = true)
     @Cacheable(
             value = "list60s",
-            key = "#criteria.toString() + ':' + #request.pageNumber + ':' + #request.pageSize"
-    )
+            key = "T(java.util.Objects).toString(#criteria, 'nocriteria') + ':' + T(java.util.Objects).toString(#request?.pageNumber, 0)"
+                    + " + ':' + T(java.util.Objects).toString(#request?.pageSize, 10)"    )
     public Page<AdsPlacementResponseDTO> search(PageRequest request, AdsPlacementSearchCriteria criteria) {
         Specification<AdsPlacement> spec = new SpecBuilder<AdsPlacement>()
                 .eq("id", criteria.getId())

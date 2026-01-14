@@ -277,8 +277,8 @@ public class NewsServiceImpl implements NewsService {
     @Transactional(readOnly = true)
     @Cacheable(
             value = "list60s",
-            key = "#criteria.toString() + ':' + #request.pageNumber + ':' + #request.pageSize"
-    )
+            key = "T(java.util.Objects).toString(#criteria, 'nocriteria') + ':' + T(java.util.Objects).toString(#request?.pageNumber, 0)"
+                    + " + ':' + T(java.util.Objects).toString(#request?.pageSize, 10)"       )
     public Page<NewsResponseDTO> search(PageRequest request, NewsSearchCriteria criteria) {
         Specification<News> spec = new SpecBuilder<News>()
                 .eq("id", criteria.getId())
@@ -305,8 +305,8 @@ public class NewsServiceImpl implements NewsService {
     @Transactional(readOnly = true)
     @Cacheable(
             value = "list120s",
-            key = "#criteria.toString() + ':' + #request.pageNumber + ':' + #request.pageSize"
-    )
+            key = "T(java.util.Objects).toString(#criteria, 'nocriteria') + ':' + T(java.util.Objects).toString(#request?.pageNumber, 0)"
+                    + " + ':' + T(java.util.Objects).toString(#request?.pageSize, 10)"    )
     public Page<NewsResponseDTO> searchPublic(PageRequest request, NewsPublicSearchCriteria criteria) {
         Specification<News> spec = new SpecBuilder<News>()
                 .joinFts("translations", "searchFts", criteria.getSearch())

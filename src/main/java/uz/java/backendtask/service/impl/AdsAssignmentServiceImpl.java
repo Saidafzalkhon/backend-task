@@ -73,8 +73,8 @@ public class AdsAssignmentServiceImpl implements AdsAssignmentService {
 
     @Cacheable(
             value = "list60s",
-            key = "#criteria.toString() + ':' + #request.pageNumber + ':' + #request.pageSize"
-    )
+            key = "T(java.util.Objects).toString(#criteria, 'nocriteria') + ':' + T(java.util.Objects).toString(#request?.pageNumber, 0)"
+                    + " + ':' + T(java.util.Objects).toString(#request?.pageSize, 10)"    )
     public Page<AdsAssignmentResponseDTO> search(PageRequest request, AdsAssignmentSearchCriteria criteria) {
         Specification<AdsAssignment> spec = new SpecBuilder<AdsAssignment>()
                 .eq("id", criteria.getId())
