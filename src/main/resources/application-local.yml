@@ -40,7 +40,7 @@ management:
         include: health,info,metrics,prometheus
 
 minio:
-  url: http://minio:9000
+  url: http://127.0.0.1:9000
   access-key: minioadmin
   secret-key: minioadmin
   bucket: uploads
